@@ -6,14 +6,13 @@ let boardArray = [
   [0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0],
 ];
+// boardArray = Array(numRows).fill(Array(numCols).fill(0));
 
 let score = 0;
 
 const numRows = 6;
 const numCols = 5;
 function setupBoard() {
-  const numRows = 6;
-  const numCols = 5;
   const container = document.createElement("div");
 
   container.className = "container";
@@ -139,7 +138,7 @@ function checkForMatches(x, y, colorNum) {
 function rollPlaceRandom() {
   const chance = Math.random();
   console.log(chance);
-  const times = chance > 0.75 ? 2 : 1;
+  const times = chance > 0.5 ? 2 : 1;
   for (let i = 0; i < times; i++) {
     placeRandom();
   }
@@ -248,13 +247,9 @@ function placeRandom() {
   isGameOver();
 }
 
-function startOfGame() {
-  placeRandom();
-  placeRandom();
-  placeRandom();
-  placeRandom();
-  placeRandom();
-  placeRandom();
+function startOfGame(numOfStartingBalls) {
+  for (let i = 0; i < numOfStartingBalls; i++) {
+    placeRandom();
+  }
 }
-
-startOfGame();
+startOfGame(8);
