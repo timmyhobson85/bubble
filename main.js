@@ -1,86 +1,79 @@
 let boardArray = [
-  [0,0,0,0,0],
-  [0,0,0,0,0],
-  [0,0,0,0,0],
-  [0,0,0,0,0],
-  [0,0,0,0,0],
-  [0,0,0,0,0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
 ];
-
-// let boardArray = [
-//   [0,0,0],
-//   [0,0,0],
-//   [0,0,0],
-// ];
 
 let score = 0;
 
 const numRows = 6;
 const numCols = 5;
-function setupBoard(){
+function setupBoard() {
   const numRows = 6;
   const numCols = 5;
-  const container = document.createElement('div')
+  const container = document.createElement("div");
 
   container.className = "container";
 
-  const colourPicker = document.createElement('div');
-  colourPicker.className = 'test'
-  colourPicker.id = 'colourPicker';
-  container.appendChild(colourPicker)
+  const colourPicker = document.createElement("div");
+  colourPicker.className = "test";
+  colourPicker.id = "colourPicker";
+  container.appendChild(colourPicker);
 
   for (let i = 0; i < numRows; i++) {
-    const rowElem = document.createElement('div');
+    const rowElem = document.createElement("div");
     // rowElem.id = i;
-    rowElem.className = 'row';
+    rowElem.className = "row";
     for (let j = 0; j < numCols; j++) {
-
-      const elem = document.createElement('div');
+      const elem = document.createElement("div");
       elem.id = `r${i}-c${j}`;
-      elem.className = 'col';
-      elem.addEventListener('click', () => {fillCell(i,j, elem)})
-      rowElem.appendChild(elem)
+      elem.className = "col";
+      elem.addEventListener("click", () => {
+        fillCell(i, j, elem);
+      });
+      rowElem.appendChild(elem);
     }
-    container.appendChild(rowElem)
-    }
-
-    const scoreElem = document.createElement('div');
-    scoreElem.id = 'score'
-    scoreElem.innerText = `score:${score}`
-    container.appendChild(scoreElem)
-    document.body.appendChild(container)
+    container.appendChild(rowElem);
   }
+
+  const scoreElem = document.createElement("div");
+  scoreElem.id = "score";
+  scoreElem.innerText = `score:${score}`;
+  container.appendChild(scoreElem);
+  document.body.appendChild(container);
+}
 
 let colour;
 let colorNum;
-setupBoard()
+setupBoard();
 
-
-function fillCell(x,y, elem) {
-  if (boardArray[x][y] !== 0){
+function fillCell(x, y, elem) {
+  if (boardArray[x][y] !== 0) {
     console.log(`can't click`);
-    return
+    return;
   }
-  elem.style = `background-color: ${colour}`
-  // console.log({x,y})
+  elem.style = `background-color: ${colour}`;
   boardArray[x][y] = colorNum;
-  setTimeout(checkForMatches, 250, x, y, colorNum)
-  colorNum = colourPick()
+  setTimeout(checkForMatches, 250, x, y, colorNum);
+  colorNum = colourPick();
 }
 
-colourPick()
+colourPick();
 
-function colourPick(){
-  const colours = ['blank', 'red', 'blue', 'green', 'yellow'];
-  colorNum = Math.ceil(Math.random() * (colours.length-1));
+function colourPick() {
+  const colours = ["blank", "red", "blue", "green", "yellow"];
+  colorNum = Math.ceil(Math.random() * (colours.length - 1));
   colour = colours[colorNum];
-  const colourPicker = document.getElementById('colourPicker');
-  colourPicker.style = `background-color: ${colour}`
-  colourPicker.innerText = `next colour: ${colour}`
-  return colorNum
+  const colourPicker = document.getElementById("colourPicker");
+  colourPicker.style = `background-color: ${colour}`;
+  colourPicker.innerText = `next colour: ${colour}`;
+  return colorNum;
 }
 
-function checkForMatches(x, y, colorNum){
+function checkForMatches(x, y, colorNum) {
   // take the x & y of the clicked one - check - lets do row 1st
   const inARow = 3;
   let horizontalInARow = 0;
@@ -89,12 +82,12 @@ function checkForMatches(x, y, colorNum){
   for (let i = 0; i < numCols; i++) {
     if (boardArray[x][i] === colorNum) {
       horizontalInARow++;
-      horizontalMatches.push({x, y:i})
+      horizontalMatches.push({ x, y: i });
     } else if (horizontalInARow < inARow) {
       horizontalInARow = 0;
-      horizontalMatches = []
+      horizontalMatches = [];
     } else if (horizontalInARow >= inARow) {
-      break
+      break;
     }
   }
   // check vertical
@@ -104,66 +97,79 @@ function checkForMatches(x, y, colorNum){
   for (let i = 0; i < numRows; i++) {
     if (boardArray[i][y] === colorNum) {
       verticalInARow++;
-      verticalMatches.push({x:i, y})
+      verticalMatches.push({ x: i, y });
     } else if (verticalInARow < inARow) {
       verticalInARow = 0;
-      verticalMatches = []
+      verticalMatches = [];
     } else if (verticalInARow >= inARow) {
-      break
+      break;
     }
   }
 
-  if(horizontalInARow >= inARow) {
-    clearCells(horizontalMatches)
-    updateScore(horizontalMatches.length)
+  let points = 0;
+  let horizaontalMatch = false;
+  let vertMatch = false;
+  if (horizontalInARow >= inARow) {
+    clearCells(horizontalMatches);
+    // points += horizontalMatches.length
+    // horizontalHatch = true;
+    updateScore(horizontalMatches.length);
   }
-  if(verticalInARow >= inARow) {
-    clearCells(verticalMatches)
-    updateScore(verticalMatches.length)
+  if (verticalInARow >= inARow) {
+    clearCells(verticalMatches);
+    // points += verticalMatches.length
+    // vertMatch = true;
+    updateScore(verticalMatches.length);
   }
   if (
     horizontalInARow < inARow &&
     verticalInARow < inARow
+    // !vertMatch && !horizontalMatch
   ) {
     rollPlaceRandom();
   }
+  // if(horizontalMatch && vertMatch) {
+  // points ++
+  // this way we can add a bonus if there's a vert & horizontal.
+
+  // updateScore(points)
+  // }
 }
 
-function rollPlaceRandom(){
+function rollPlaceRandom() {
   const chance = Math.random();
-  console.log(chance)
-  const times = (chance > 0.75)? 2: 1;
+  console.log(chance);
+  const times = chance > 0.75 ? 2 : 1;
   for (let i = 0; i < times; i++) {
-    placeRandom()
+    placeRandom();
   }
 }
 
-function clearCells(cells){
-  cells.forEach(cell => {
-    document.getElementById(`r${cell.x}-c${cell.y}`).style = '';
+function clearCells(cells) {
+  cells.forEach((cell) => {
+    document.getElementById(`r${cell.x}-c${cell.y}`).style = "";
     boardArray[cell.x][cell.y] = 0;
-  })
+  });
 }
 
-function updateScore(num){
-  score += num
-  document.getElementById('score').innerText = `score:${score}`
+function updateScore(num) {
+  score += num;
+  document.getElementById("score").innerText = `score:${score}`;
 }
 
-
-function checkForRandom(x, y, colorNum){
+function checkForRandom(x, y, colorNum) {
   const inARow = 3;
   let horizontalInARow = 0;
   let horizontalMatches = [];
   for (let i = 0; i < numCols; i++) {
     if (boardArray[x][i] === colorNum) {
       horizontalInARow++;
-      horizontalMatches.push({x, y:i})
+      horizontalMatches.push({ x, y: i });
     } else if (horizontalInARow < inARow) {
       horizontalInARow = 0;
-      horizontalMatches = []
+      horizontalMatches = [];
     } else if (horizontalInARow >= inARow) {
-      break
+      break;
     }
   }
 
@@ -172,75 +178,77 @@ function checkForRandom(x, y, colorNum){
   for (let i = 0; i < numRows; i++) {
     if (boardArray[i][y] === colorNum) {
       verticalInARow++;
-      verticalMatches.push({x:i, y})
+      verticalMatches.push({ x: i, y });
     } else if (verticalInARow < inARow) {
       verticalInARow = 0;
-      verticalMatches = []
+      verticalMatches = [];
     } else if (verticalInARow >= inARow) {
-      break
+      break;
     }
   }
 
-  if(horizontalInARow >= inARow ||verticalInARow >= inARow) {
-    console.log('bin!')
+  if (horizontalInARow >= inARow || verticalInARow >= inARow) {
+    console.log("bin!");
     return true;
   }
 }
 
-function isGameOver(){
+function isGameOver() {
   const blankCells = [];
   for (let i = 0; i < numRows; i++) {
     for (let j = 0; j < numCols; j++) {
       if (boardArray[i][j] === 0) {
-        blankCells.push({x:i, y:j})
+        blankCells.push({ x: i, y: j });
       }
     }
   }
-  if (blankCells.length === 0){
-    console.warn('GAME OVER')
-    const scoreBoard = document.getElementById('score')
+  if (blankCells.length === 0) {
+    console.warn("GAME OVER");
+    const scoreBoard = document.getElementById("score");
     scoreBoard.innerText = `GAMEOVER\rscore:${score}\nclick to reload`;
-    scoreBoard.addEventListener('click', () => {
-      location.reload()
-    })
+    scoreBoard.addEventListener("click", () => {
+      location.reload();
+    });
     return;
   }
 }
 
-function placeRandom(){
+function placeRandom() {
   // get empty cells;
   const blankCells = [];
   for (let i = 0; i < numRows; i++) {
     for (let j = 0; j < numCols; j++) {
       if (boardArray[i][j] === 0) {
-        blankCells.push({x:i, y:j})
+        blankCells.push({ x: i, y: j });
       }
     }
   }
 
   // get randomBlankCellCoords
-  if (blankCells.length === 0){
-    console.warn('GAME OVER')
-    document.getElementById('score').innerText = `GAMEOVER\rscore:${score}`
+  if (blankCells.length === 0) {
+    console.warn("GAME OVER");
+    document.getElementById("score").innerText = `GAMEOVER\rscore:${score}`;
     return;
   }
-  const {x,y} = blankCells[Math.floor(Math.random() * blankCells.length)];
-  const colours = ['blank', 'red', 'blue', 'green', 'yellow'];
-  const randomColorNum = Math.ceil(Math.random() * (colours.length-1));
+  const { x, y } = blankCells[Math.floor(Math.random() * blankCells.length)];
+  const colours = ["blank", "red", "blue", "green", "yellow"];
+  const randomColorNum = Math.ceil(Math.random() * (colours.length - 1));
   const randomColor = colours[randomColorNum];
   boardArray[x][y] = randomColorNum;
-  const isMatch = checkForRandom(x,y,randomColorNum);
+  const isMatch = checkForRandom(x, y, randomColorNum);
   if (isMatch) {
-    console.log('random create match - replacing and trying again');
+    console.log("random create match - replacing and trying again");
     boardArray[x][y] = 0;
     placeRandom();
-    return
+    return;
   }
-  document.getElementById(`r${x}-c${y}`).style = `background-color:${randomColor}`
-  isGameOver()
+  document.getElementById(
+    `r${x}-c${y}`
+  ).style = `background-color:${randomColor}`;
+  isGameOver();
 }
 
-function startOfGame(){
+function startOfGame() {
   placeRandom();
   placeRandom();
   placeRandom();
@@ -249,5 +257,4 @@ function startOfGame(){
   placeRandom();
 }
 
-startOfGame()
-
+startOfGame();
