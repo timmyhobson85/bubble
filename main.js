@@ -135,15 +135,6 @@ function checkForMatches(x, y, colorNum) {
   // }
 }
 
-function rollPlaceRandom() {
-  const chance = Math.random();
-  console.log(chance);
-  const times = chance > 0.5 ? 2 : 1;
-  for (let i = 0; i < times; i++) {
-    placeRandom();
-  }
-}
-
 function clearCells(cells) {
   cells.forEach((cell) => {
     document.getElementById(`r${cell.x}-c${cell.y}`).style = "";
@@ -252,4 +243,4 @@ function startOfGame(numOfStartingBalls) {
     placeRandom();
   }
 }
-startOfGame(8);
+startOfGame(6);
