@@ -2,6 +2,8 @@ body,
 html {
   margin: 0;
   padding: 0;
+  text-align: center;
+  font-family: monospace;
 }
 
 .container {
@@ -12,7 +14,7 @@ html {
   height: 100vh;
   padding: 0;
   margin: 0;
-  background-color: rgb(33, 33, 33);
+  background-color: rgb(220, 220, 220);
 }
 
 #score {
